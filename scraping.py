@@ -18,7 +18,9 @@ def scrape_all():
         "news_paragraph": news_paragraph,
         "featured_image": featured_image(browser),
         "facts": mars_facts(),
-        "last_modified": dt.datetime.now()
+        "hemispheres": hemisphere_data(browser),
+        "last_modified": dt.datetime.now(),
+        
     }
 
     # Stop webdriver and return data
@@ -104,3 +106,42 @@ if __name__ == "__main__":
 
     # If running as script, print scraped data
     print(scrape_all())
+
+def hemisphere_data(browser):
+    try:
+        url = 'https://marshemispheres.com/'
+        browser.visit(url)
+        # 2. Create a list to hold the images and titles.
+        hemisphere_image_urls = []
+
+        # 3. Write code to retrieve the image urls and titles for each hemisphere.
+
+        html = browser.html
+        hemi_soup = soup(html, 'html.parser')
+        results = hemi_soup.find_all('div', class_='description')
+
+        hemisphere_image_urls = []
+        for item in results:
+            # gets image title and adds title to list
+            title = item.find('h3').text
+            
+            # gets href, appends it to URL base, visits new page
+            href = item.find('a')['href']
+            img_url = url + href
+            browser.visit(img_url)
+            new_html = browser.html
+            new_soup = soup(new_html, 'html.parser')
+
+            # Gets image url from new page
+            image_tag = new_soup.find('div', class_ = 'downloads')
+            jpg_url = image_tag.find('a')['href']
+            jpg_url = url + jpg_url
+            
+            # Adds items to hemisphere_image_urls
+            temp_dict = dict({'img_url': jpg_url, 'title': title})
+            hemisphere_image_urls.append(temp_dict)
+
+        return hemisphere_image_urls
+
+    except AttributeError:
+        return None
