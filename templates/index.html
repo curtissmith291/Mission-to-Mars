@@ -9,11 +9,16 @@
       rel="stylesheet"
       href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"
     />
+    <style>
+        .background {
+          background-color: rgb(247, 248, 248);
+        }
+    </style>
   </head>
-  <body>
+  <body class='background'>
     <div class="container">
       <!-- Add Jumbotron to Header -->
-      <div class="jumbotron text-center">
+      <div class="jumbotron text-center" style = "background-image: url('https://mars.nasa.gov/system/news_items/main_images/8944_1-PIA24546-1280.jpg');">
         <h1>Mission to Mars</h1>
         <!-- Add a button to activate scraping script -->
         <p><a class="btn btn-primary btn-lg" href="/scrape" role="button">Scrape New Data</a></p>
@@ -50,14 +55,19 @@
       </div>
       <!-- Add section for Hemispheres -->
       <div class="row" id="hemisphere">
-        <div class="col-md-12">
+        <div class="col-md-8">
           <div class="media">
             <div class="media-body">
               <h2>Mars Hemisphere Images</h2>
               {% for hemisphere in mars.hemispheres %}
               <!-- <a href="{{hemisphere.img_url}}" {{hemisphere.img_url}}></a> -->
-              <img src="{{hemisphere.img_url}}" alt="">
-              <h4 class="media-heading">{{ hemisphere.title }}</h4>
+              <img src="{{hemisphere.img_url}}" 
+                alt=""
+                class="img-responsive">
+              
+              <h4 class="media-heading">
+                <a href="{{hemisphere.img_url}}">{{ hemisphere.title }}</a>
+              </h4>
               <br>
               {% endfor %}
             </div>
